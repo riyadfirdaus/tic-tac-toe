@@ -38,6 +38,7 @@ const mainboard = (() => {
 
   const createMap = (mark, index) => {
     function assignMap(s) {
+      console.log(count);
       if (boardMap[s]) {
         boardMap[s]++;
       } else {
@@ -46,6 +47,10 @@ const mainboard = (() => {
       if (boardMap[s] === 3) {
         if (`${s[0]}` === "X") header.innerHTML = "You win!";
         else header.innerHTML = "You Lose";
+        game.stop();
+      }
+      if (count >= 9) {
+        header.innerHTML = "It's a draw!";
         game.stop();
       }
     }
@@ -72,6 +77,8 @@ const mainboard = (() => {
       let cell = document.getElementById(`cell-${index}`);
 
       cell.classList.add("pre-animation");
+      if (mark == "X") cell.classList.add("blue");
+      else cell.classList.add("red");
       await new Promise((resolve) =>
         setTimeout(() => {
           cell.innerText = `${mark}`;
@@ -80,13 +87,13 @@ const mainboard = (() => {
         }, 150)
       );
 
+      count++;
       // Isi array
       board[index] = mark;
 
       //Isi Map
       createMap(mark, index);
 
-      count++;
       if (count == 9) {
         mainboard.isFull = true;
       }
